@@ -8,7 +8,6 @@ import os
 load_dotenv()
 
 TOKEN = os.getenv('BOT_TOKEN')
-print(TOKEN)
 intents = discord.Intents.default()
 intents.messages = True
 client = discord.Client(intents=intents)
