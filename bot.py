@@ -23,5 +23,10 @@ async def on_message(message):
 
     if message.content.startswith('$hello'):
         await message.channel.send('Hello!')
+    if message.content.startswith('$josef'):
+        await message.channel.send('https://cdn.discordapp.com/attachments/970994367441534996/971022925928992818/unknown.png')
+
+    if 'oscar' in message.content:
+        await message.channel.send('Fuck the Oscars!')
 
 client.run(TOKEN)
