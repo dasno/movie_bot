@@ -2,8 +2,6 @@ from typing import List
 from typing import Any
 from dataclasses import dataclass
 
-#GENERATED FROM https://json2csharp.com/
-
 @dataclass
 class UserData:
     PlaybackPositionTicks: str

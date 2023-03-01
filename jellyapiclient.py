@@ -10,7 +10,6 @@ import requests
 
 class Jellyapi:
     
-    
     def __init__(self, jellyAddress, jellyAPI, jellyUID):
         self.API_KEY = jellyAPI
         self.ADDRESS = jellyAddress
@@ -26,7 +25,6 @@ class Jellyapi:
                                 params={'userId':self.JELLY_UID})
         resJson = json.loads(response.content)
         return AllLibs.from_dict(resJson)
-
 
     def GetLibraryItems(self, libId):
         header = {'X-Emby-Token':self.API_KEY}

@@ -2,8 +2,6 @@ from typing import List
 from typing import Any
 from dataclasses import dataclass
 
-#GENERATED FROM https://json2csharp.com/
-
 @dataclass
 class Item:
     Name: str
@@ -27,8 +25,6 @@ class Item:
         _LocationType = str(obj.get("LocationType"))
         return Item(_Name, _ServerId, _Id, _ChannelId, _IsFolder, _Type, _CollectionType, _LocationType)
 
-
-
 @dataclass
 class AllLibs:
     Items: List[Item]
@@ -41,9 +37,3 @@ class AllLibs:
         _TotalRecordCount = int(obj.get("TotalRecordCount"))
         _StartIndex = int(obj.get("StartIndex"))
         return AllLibs(_Items, _TotalRecordCount, _StartIndex)
-
-
-
-# Example Usage
-# jsonstring = json.loads(myjsonstring)
-# root = Root.from_dict(jsonstring)

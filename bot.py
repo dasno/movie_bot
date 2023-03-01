@@ -7,13 +7,13 @@ from jellyapiclient import Jellyapi
 import enum
 
 load_dotenv()
-
 API_KEY = os.getenv('JELLY_KEY')
 ADDRESS = os.getenv('ADDRESS')
 JELLY_UID = os.getenv('JELLY_BOT_UID')
-#TODO get all defualt bot userId from env file
 TOKEN = os.getenv('BOT_TOKEN')
 SERVER_ID = os.getenv('DISCORD_SERVER_ID')
+
+
 intents = discord.Intents.default()
 intents.message_content = True
 intents.messages = True
