@@ -5,6 +5,8 @@ import os
 from discord import app_commands
 from jellyapiclient import Jellyapi
 import enum
+from formula import FormulaFeature
+import json
 
 load_dotenv()
 API_KEY = os.getenv('JELLY_KEY')
@@ -20,6 +22,9 @@ intents.messages = True
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 jellyClient = Jellyapi(ADDRESS,API_KEY,JELLY_UID)
+
+
+jsonDict = json.load(open('f1times.json'))
 
 LibList = []
 for x in jellyClient.GetAllLibs().Items:
@@ -39,6 +44,14 @@ async def jellyLibs(interaction, subcommand:LibEnum):
     for x in item.Items:
         itemList+=x.Name + "\n"
     await interaction.response.send_message(str(itemList))
+
+@tree.command(name = "f1", description= "F1 commands", guild=discord.Object(id=SERVER_ID) )
+async def F1When(interaction, arg:str):
+    if arg != "when":
+        await interaction.response.send_message("Incorrect argument")
+        return
+    await interaction.response.send_message(FormulaFeature.FindClosestSession(jsonDict))
+
 
 @client.event
 async def on_ready():
