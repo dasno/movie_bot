@@ -7,6 +7,7 @@ from jellyapiclient import Jellyapi
 import enum
 from formula import FormulaFeature
 import json
+from typing import Literal, List
 
 load_dotenv()
 API_KEY = os.getenv('JELLY_KEY')
@@ -25,6 +26,7 @@ jellyClient = Jellyapi(ADDRESS,API_KEY,JELLY_UID)
 
 
 jsonDict = json.load(open('f1times.json'))
+GPList = FormulaFeature.GetAllGPs(jsonDict)
 
 LibList = []
 for x in jellyClient.GetAllLibs().Items:
@@ -45,12 +47,33 @@ async def jellyLibs(interaction, library:LibEnum):
         itemList+=x.Name + "\n"
     await interaction.response.send_message(str(itemList))
 
-@tree.command(name = "f1", description= "F1 commands", guild=discord.Object(id=SERVER_ID) )
-async def F1When(interaction, arg:str):
-    if arg != "when":
+@tree.command(name = "f1", description= "F1 commands", guild=discord.Object(id=SERVER_ID))
+async def F1Command(interaction, option:str, option2:str=None):
+    if option != "when":
         await interaction.response.send_message("Incorrect argument")
         return
     await interaction.response.send_message(FormulaFeature.FindClosestSession(jsonDict))
+
+@F1Command.autocomplete('option')
+async def F1WhenAutocomplete(
+    interaction: discord.Interaction,current: str) -> List[app_commands.Choice[str]]:
+    options = ['when', 'standings', 'gp']
+    return [
+        app_commands.Choice(name=option, value=option)
+        for option in options if current.lower() in option.lower()
+    ]
+@F1Command.autocomplete('option2')
+async def F1WhenAutocomplete(
+    interaction: discord.Interaction,current: str) -> List[app_commands.Choice[str]]:
+    options = GPList
+    print(current, interaction.namespace['option'])
+    if interaction.namespace['option'] == 'when':
+        return []
+    if interaction.namespace['option'] == 'gp':
+        return [
+            app_commands.Choice(name=option.Name, value=option.Name)
+            for option in options if current.lower() in option.Name.lower()
+        ]
 
 
 @client.event
