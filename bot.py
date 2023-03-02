@@ -60,6 +60,11 @@ async def F1Command(interaction, option:str, option2:str=None):
         response = "Round {roundnr} - {GPName} \nSessions:\n{sessionList}".format(roundnr = res.Round, GPName = res.Name, sessionList = sessionString)
         await interaction.response.send_message(response)
         return
+    if option == "standings":
+        await interaction.resonse.send_message("Not yet implemented")
+        return
+    
+    await interaction.resonse.send_message("Wrong command")
                     
     
 
