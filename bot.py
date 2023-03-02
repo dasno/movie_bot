@@ -49,10 +49,19 @@ async def jellyLibs(interaction, library:LibEnum):
 
 @tree.command(name = "f1", description= "F1 commands", guild=discord.Object(id=SERVER_ID))
 async def F1Command(interaction, option:str, option2:str=None):
-    if option != "when":
-        await interaction.response.send_message("Incorrect argument")
+    if option == "when":
+        await interaction.response.send_message(FormulaFeature.FindClosestSession(jsonDict))
         return
-    await interaction.response.send_message(FormulaFeature.FindClosestSession(jsonDict))
+    if option == "gp":
+        res = FormulaFeature.GetGP(jsonDict, option2)
+        sessionString = ""
+        for x in res.Sessions:
+            sessionString += "{sessionName} @ {sessionTime}\n".format(sessionName = x.Name, sessionTime = FormulaFeature.GetFormattedSessionTime(x))
+        response = "Round {roundnr} - {GPName} \nSessions:\n{sessionList}".format(roundnr = res.Round, GPName = res.Name, sessionList = sessionString)
+        await interaction.response.send_message(response)
+        return
+                    
+    
 
 @F1Command.autocomplete('option')
 async def F1WhenAutocomplete(
