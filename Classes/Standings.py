@@ -112,9 +112,3 @@ class Root:
     def from_dict(obj: Any) -> 'Root':
         _MRData = MRData.from_dict(obj.get("MRData"))
         return Root(_MRData)
-
-
-
-# Example Usage
-# jsonstring = json.loads(myjsonstring)
-# root = Root.from_dict(jsonstring)
