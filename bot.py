@@ -36,9 +36,9 @@ print(list)
 async def hello_command(interaction):
     await interaction.response.send_message("Hello, " + interaction.user.name + "!")
 
-@tree.command(name = "jelly", description= "Jellyfin commands", guild=discord.Object(id=SERVER_ID))
-async def jellyLibs(interaction, subcommand:LibEnum):
-    lib = jellyClient.GetLibByName(str(subcommand.name))
+@tree.command(name = "jelly", description= "Jellyfin commands", guild=discord.Object(id=SERVER_ID), )
+async def jellyLibs(interaction, library:LibEnum):
+    lib = jellyClient.GetLibByName(str(library.name))
     item = jellyClient.GetLibraryItems(lib.Id)
     itemList = ""
     for x in item.Items:
