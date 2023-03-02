@@ -33,7 +33,7 @@ for x in jellyClient.GetAllLibs().Items:
     LibList.append(str(x.Name))
 
 LibEnum = enum.Enum('Lib', LibList)
-print(list)          
+
 @tree.command(name = "hello", description = "Say Hello", guild=discord.Object(id=SERVER_ID)) 
 async def hello_command(interaction):
     await interaction.response.send_message("Hello, " + interaction.user.name + "!")
@@ -43,8 +43,10 @@ async def jellyLibs(interaction, library:LibEnum):
     lib = jellyClient.GetLibByName(str(library.name))
     item = jellyClient.GetLibraryItems(lib.Id)
     itemList = ""
+
     for x in item.Items:
         itemList+=x.Name + "\n"
+
     await interaction.response.send_message(str(itemList))
 
 @tree.command(name = "f1", description= "F1 commands", guild=discord.Object(id=SERVER_ID))
@@ -52,18 +54,24 @@ async def F1Command(interaction, option:str, option2:str=None):
     if option == "when":
         await interaction.response.send_message(FormulaFeature.FindClosestSession(jsonDict))
         return
+    
     if option == "gp":
         res = FormulaFeature.GetGP(jsonDict, option2)
         sessionString = ""
+
         for x in res.Sessions:
             sessionString += "{sessionName} @ {sessionTime}\n".format(sessionName = x.Name, sessionTime = FormulaFeature.GetFormattedSessionTime(x))
+
         response = "Round {roundnr} - {GPName} \nSessions:\n{sessionList}".format(roundnr = res.Round, GPName = res.Name, sessionList = sessionString)
         await interaction.response.send_message(response)
         return
+    
     if option == "standings":
         result = ""
+
         for x in FormulaFeature.GetStandings():
             result += "{pos}. {driverName} {points}\n".format(pos = x.position, driverName = x.Driver.familyName, points = x.points)
+
         await interaction.response.send_message(result)
         return
     
