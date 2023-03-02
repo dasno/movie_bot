@@ -61,7 +61,10 @@ async def F1Command(interaction, option:str, option2:str=None):
         await interaction.response.send_message(response)
         return
     if option == "standings":
-        await interaction.resonse.send_message("Not yet implemented")
+        result = ""
+        for x in FormulaFeature.GetStandings():
+            result += "{pos}. {driverName} {points}\n".format(pos = x.position, driverName = x.Driver.familyName, points = x.points)
+        await interaction.response.send_message(result)
         return
     
     await interaction.resonse.send_message("Wrong command")
