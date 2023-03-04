@@ -8,6 +8,8 @@ import enum
 from formula import FormulaFeature
 import json
 from typing import Literal, List
+import streams
+from discord.ext import tasks
 
 load_dotenv()
 API_KEY = os.getenv('JELLY_KEY')
@@ -15,6 +17,7 @@ ADDRESS = os.getenv('ADDRESS')
 JELLY_UID = os.getenv('JELLY_BOT_UID')
 TOKEN = os.getenv('BOT_TOKEN')
 SERVER_ID = os.getenv('DISCORD_SERVER_ID')
+STREAM_URL = "rtmp://192.168.1.3/live/obs_stream"
 
 
 intents = discord.Intents.default()
@@ -101,11 +104,21 @@ async def F1WhenAutocomplete(
         ]
 
 
+@tasks.loop(seconds=5)
+async def RunStreamCheck():
+    print("Looping")
+    if streams.CheckStreamRunning(STREAM_URL):
+        activity = discord.Streaming(name="STREAM ON", url="http://192.168.196.100:8096")
+        await client.change_presence(activity=activity)
+    else:
+       await client.change_presence(activity=None) 
+
 @client.event
 async def on_ready():
     await tree.sync(guild=discord.Object(id=SERVER_ID))
     print(f'We have logged in as {client.user}')
     print("Ready!")
+    RunStreamCheck.start()
    
 #reactions to messages without slash    
 @client.event

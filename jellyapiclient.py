@@ -15,7 +15,7 @@ class Jellyapi:
         self.ADDRESS = jellyAddress
         self.JELLY_UID = jellyUID
         self.con = Connection(self.API_KEY, self.ADDRESS)
-    
+
 
     def GetAllLibs(self):
         header = {'X-Emby-Token':self.API_KEY}
