@@ -47,7 +47,7 @@ class FormulaFeature():
     def GetStandings() -> List[Standings.DriverStanding]:
         response = requests.get('http://ergast.com/api/f1/current/driverStandings.json')
         stand = Standings.Root.from_dict(json.loads(response.content))
-        return stand.MRData.StandingsTable.StandingsLists[0].DriverStandings
+        return stand.MRData.StandingsTable
 
 
         

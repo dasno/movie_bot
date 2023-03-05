@@ -96,9 +96,10 @@ async def F1Command(interaction, option:str, option2:str=None):
         return
     
     if option == "standings":
-        result = ""
-
-        for x in FormulaFeature.GetStandings():
+        
+        standings = FormulaFeature.GetStandings()
+        result = "Season {seasonYear}:\n".format(seasonYear = standings.season)
+        for x in standings.StandingsLists[0].DriverStandings:
             result += "{pos}. {driverName} {points}\n".format(pos = x.position, driverName = x.Driver.familyName, points = x.points)
 
         await interaction.response.send_message(result)
