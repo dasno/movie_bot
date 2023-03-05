@@ -132,17 +132,6 @@ async def F1WhenAutocomplete(
         ]
 
 
-@tasks.loop(seconds=20)
-async def RunStreamCheck():
-    print("Looping")
-    res = await asyncio.create_subprocess_shell("timeout 10s ffprobe -v quiet {STREAM_URL}")
-    print("return: "+str(res.returncode))
-    
-    if not res.returncode:
-        activity = discord.Streaming(name="STREAM ON", url="http://192.168.196.100:8096")
-        await client.change_presence(activity=activity)
-    else:
-       await client.change_presence(activity=None)
 
 @client.event
 async def on_ready():
