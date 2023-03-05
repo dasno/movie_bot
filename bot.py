@@ -11,8 +11,6 @@ from typing import Literal, List
 import streams
 from discord.ext import tasks
 import configparser
-import subprocess
-import asyncio
 
 
 def CreateSettingsIni():
