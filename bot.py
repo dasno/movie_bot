@@ -14,16 +14,6 @@ import configparser
 import subprocess
 import asyncio
 
-"""load_dotenv()
-API_KEY = os.getenv('JELLY_KEY')
-ADDRESS = os.getenv('ADDRESS')
-JELLY_UID = os.getenv('JELLY_BOT_UID')
-TOKEN = os.getenv('BOT_TOKEN')
-SERVER_ID = os.getenv('DISCORD_SERVER_ID')
-STREAM_URL = "rtmp://192.168.1.3/live/obs_stream"""
-
-
-
 
 def CreateSettingsIni():
     try:
@@ -116,7 +106,7 @@ async def F1Command(interaction, option:str, option2:str=None):
         await interaction.response.send_message(result)
         return
     
-    await interaction.resonse.send_message("Wrong command")
+    await interaction.response.send_message("Wrong command")
                     
     
 
@@ -142,7 +132,7 @@ async def F1WhenAutocomplete(
         ]
 
 
-"""@tasks.loop(seconds=20)
+@tasks.loop(seconds=20)
 async def RunStreamCheck():
     print("Looping")
     res = await asyncio.create_subprocess_shell("timeout 10s ffprobe -v quiet {STREAM_URL}")
@@ -152,7 +142,7 @@ async def RunStreamCheck():
         activity = discord.Streaming(name="STREAM ON", url="http://192.168.196.100:8096")
         await client.change_presence(activity=activity)
     else:
-       await client.change_presence(activity=None)"""
+       await client.change_presence(activity=None)
 
 @client.event
 async def on_ready():
@@ -164,8 +154,6 @@ async def on_ready():
 #reactions to messages without slash    
 @client.event
 async def on_message(message):
-    print("Msg detected")
-    print(message.content)
     if message.author == client.user:
         return
 
