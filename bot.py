@@ -1,6 +1,5 @@
 from email.policy import default
 import discord
-from dotenv import load_dotenv
 import os
 from discord import app_commands
 from jellyapiclient import Jellyapi
