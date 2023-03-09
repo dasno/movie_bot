@@ -66,6 +66,11 @@ LibEnum = enum.Enum('Lib', LibList)
 async def hello_command(interaction):
     await interaction.response.send_message("Hello, " + interaction.user.name + "!")
 
+@tree.command(name= "help", description = "Prints help message",guild=discord.Object(id=SERVER_ID))
+async def helpcommand(interaction):
+    msg = "Hey, " + interaction.user.name + "!\n These are commands you can use with this bot:\n```\\hello\n\\f1\n\\jelly```"
+    await interaction.response.send_message(msg)
+
 @tree.command(name = "jelly", description= "Jellyfin commands", guild=discord.Object(id=SERVER_ID), )
 async def jellyLibs(interaction, library:LibEnum):
     lib = jellyClient.GetLibByName(str(library.name))
