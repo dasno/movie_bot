@@ -90,11 +90,16 @@ async def F1Command(interaction, option:str, option2:str=None):
        
     if option == "gp":
         res = FormulaFeature.GetGP(jsonDict, option2)
-        sessionString = ""
 
+        if not res:
+            await interaction.response.send_message("Incorrect argument provided. Try again with correct arguments")
+            return
+        
+        sessionString = ""
+        
         for x in res.Sessions:
             sessionString += "{sessionName} @ {sessionTime}\n".format(sessionName = x.Name, sessionTime = FormulaFeature.GetFormattedSessionTime(x, None))
-
+    
         response = "Round {roundnr} - {GPName} \nSessions:\n{sessionList}".format(roundnr = res.Round, GPName = res.Name, sessionList = sessionString)
         await interaction.response.send_message(response)
         return
