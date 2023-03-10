@@ -34,7 +34,7 @@ class FormulaFeature():
         parsed = FormulaFeature.GetAllGPs(data)
         last:Any
         for x in parsed:
-            if x.Sessions[4].StartTime + timedelta.min(120) > datetime.now(timezone.utc):
+            if x.Sessions[4].StartTime + timedelta(minutes=180) > datetime.now(timezone.utc):
                 return last
             last = x
     
