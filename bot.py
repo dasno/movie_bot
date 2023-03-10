@@ -89,7 +89,7 @@ async def F1Command(interaction, option:str, option2:str=None):
          return
        
     if option == "gp":
-        res = FormulaFeature.GetGP(jsonDict, option2)
+        res = FormulaFeature.GetGPByName(jsonDict, str(option2))
 
         if not res:
             await interaction.response.send_message("Incorrect argument provided. Try again with correct arguments")
@@ -97,10 +97,16 @@ async def F1Command(interaction, option:str, option2:str=None):
         
         sessionString = ""
         
+        results = FormulaFeature.GetRaceStandingsByRound(int(res.Round))
         for x in res.Sessions:
             sessionString += "{sessionName} @ {sessionTime}\n".format(sessionName = x.Name, sessionTime = FormulaFeature.GetFormattedSessionTime(x, None))
     
-        response = "Round {roundnr} - {GPName} \nSessions:\n{sessionList}".format(roundnr = res.Round, GPName = res.Name, sessionList = sessionString)
+        response = "__**Round {roundnr} - {GPName}**__ \nSessions:\n{sessionList}".format(roundnr = res.Round, GPName = res.Name, sessionList = sessionString)
+
+        if results != None:
+            response += "\n__**:checkered_flag:Results::checkered_flag:**__"
+            for x in results.Results:
+                response += "\n{position}. {firstName} {lastName} - {points}".format(position=x.position, firstName=x.Driver.givenName, lastName=x.Driver.familyName, points=x.points)
         await interaction.response.send_message(response)
         return
     
