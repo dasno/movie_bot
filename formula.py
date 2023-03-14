@@ -82,6 +82,12 @@ class FormulaFeature():
         race = FormulaFeature.FindClosestPastRace(data)
         standings = FormulaFeature.GetRaceStandingsByRound(race.Round)
 
+    def FormatResults(results:List[Results.Result]) -> str:
+        response:str = ""
+        for x in results:
+                response += "\n{position}. {firstName} {lastName} - {points}".format(position=x.position, firstName=x.Driver.givenName, lastName=x.Driver.familyName, points=x.points)
+        return response
+
 
 
         
