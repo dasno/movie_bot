@@ -81,6 +81,7 @@ class FormulaFeature():
     def GetLatestResults(data):
         race = FormulaFeature.FindClosestPastRace(data)
         standings = FormulaFeature.GetRaceStandingsByRound(race.Round)
+        return standings.Results
 
     def FormatResults(results:List[Results.Result]) -> str:
         response:str = ""
