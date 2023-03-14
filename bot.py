@@ -91,9 +91,19 @@ async def F1Command(interaction, option:str, option2:str=None):
     if option == "gp":
         res = FormulaFeature.GetGPByName(jsonDict, str(option2))
 
-        if not res:
+        if not res and option2 != None:
             await interaction.response.send_message("Incorrect argument provided. Try again with correct arguments")
             return
+        
+        if not option2:
+            race = FormulaFeature.FindClosestPastRace(jsonDict)
+            result = FormulaFeature.GetLatestResults(jsonDict)
+            response =  """Last race was **{raceName}** on {raceDate}\n\n__**:checkered_flag:Results::checkered_flag:**__
+            {results}
+            """.format(raceName = race.Name, raceDate = race.Sessions[4].StartTime.date().strftime("%d.%m.%Y"), results = FormulaFeature.FormatResults(result))
+            await interaction.response.send_message(response)
+            return
+
         
         sessionString = ""
         
@@ -105,8 +115,7 @@ async def F1Command(interaction, option:str, option2:str=None):
 
         if results != None:
             response += "\n__**:checkered_flag:Results::checkered_flag:**__"
-            for x in results.Results:
-                response += "\n{position}. {firstName} {lastName} - {points}".format(position=x.position, firstName=x.Driver.givenName, lastName=x.Driver.familyName, points=x.points)
+            response += FormulaFeature.FormatResults(results.Results)
         await interaction.response.send_message(response)
         return
     
