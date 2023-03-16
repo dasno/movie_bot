@@ -10,6 +10,7 @@ from typing import Literal, List
 import streams
 from discord.ext import tasks
 import configparser
+import urllib.request
 
 
 
@@ -129,11 +130,16 @@ async def F1Command(interaction, option:str, option2:str=None):
             sessionString += "{sessionName} @ {sessionTime}\n".format(sessionName = x.Name, sessionTime = FormulaFeature.GetFormattedSessionTime(x, None))
     
         response = "__**Round {roundnr} - {GPName}**__ \nSessions:\n{sessionList}".format(roundnr = res.Round, GPName = res.Name, sessionList = sessionString)
+        
+        e = discord.Embed()
+        e.set_image(url=res.Map)
 
         if results != None:
             response += "\n__**:checkered_flag:Results::checkered_flag:**__"
             response += FormulaFeature.FormatResults(results.Results)
-        await interaction.response.send_message(response)
+        
+        await interaction.response.send_message(response, embed=e)
+        
         return
     
     if option == "standings":
