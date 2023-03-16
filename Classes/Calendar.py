@@ -19,6 +19,7 @@ class Session:
 class GrandPrix:
     Round:str
     Name:str
+    Map:str
     Sprint:bool
     Sessions:List[Session]
 
@@ -26,9 +27,10 @@ class GrandPrix:
     def from_dict(obj:Any) -> 'GrandPrix':
         _Round = str(obj.get("round"))
         _Name = str(obj.get("name"))
+        _Map = str(obj.get("map"))
         _Sprint = bool(obj.get("sprint"))
         _Sessions = [Session.from_dict(y) for y in obj.get("session")]
-        return GrandPrix(_Round, _Name, _Sprint, _Sessions)
+        return GrandPrix(_Round, _Name, _Map, _Sprint, _Sessions)
 @dataclass
 class Calendar:
     GPs:List[GrandPrix]

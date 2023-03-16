@@ -4,6 +4,7 @@
         "round": "1",
         "name": "Bahrain GP",
         "sprint": false,
+        "map": "https://media.formula1.com/image/upload/f_auto/q_auto/v1677244985/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Bahrain_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
@@ -31,6 +32,7 @@
         "round": "2",
         "name": "Saudi Arabian GP",
         "sprint": false,
+        "map":"https://media.formula1.com/image/upload/f_auto/q_auto/v1677244985/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Saudi_Arabia_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
@@ -58,6 +60,7 @@
         "round": "3",
         "name": "Australian GP",
         "sprint": false,
+        "map":"https://media.formula1.com/image/upload/f_auto/q_auto/v1677244985/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Australia_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
@@ -85,6 +88,7 @@
         "round": "4",
         "name": "Azerbaijan GP",
         "sprint": true,
+        "map":"https://media.formula1.com/image/upload/f_auto/q_auto/v1677244987/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Baku_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
@@ -112,6 +116,7 @@
         "round": "5",
         "name": "Miami GP",
         "sprint": false,
+        "map":"https://media.formula1.com/image/upload/f_auto/q_auto/v1677244985/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Miami_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
@@ -139,6 +144,7 @@
         "round": "6",
         "name": "Emilia Romagna GP",
         "sprint": false,
+        "map":"https://media.formula1.com/image/upload/f_auto/q_auto/v1677244984/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Emilia_Romagna_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
@@ -166,6 +172,7 @@
         "round": "7",
         "name": "Monaco GP",
         "sprint": false,
+        "map":"https://media.formula1.com/image/upload/f_auto/q_auto/v1677244984/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Monoco_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
@@ -193,6 +200,7 @@
         "round": "8",
         "name": "Spanish GP",
         "sprint": false,
+        "map":"https://media.formula1.com/image/upload/f_auto/q_auto/v1677244986/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Spain_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
@@ -220,6 +228,7 @@
         "round": "9",
         "name": "Canadian GP",
         "sprint": false,
+        "map":"https://media.formula1.com/image/upload/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Canada_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
@@ -247,6 +256,7 @@
         "round": "10",
         "name": "Austrian GP",
         "sprint": true,
+        "map":"https://media.formula1.com/image/upload/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Austria_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
@@ -274,6 +284,7 @@
         "round": "11",
         "name": "British GP",
         "sprint": false,
+        "map":"https://media.formula1.com/image/upload/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Great_Britain_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
@@ -301,6 +312,7 @@
         "round": "12",
         "name": "Hungarian GP",
         "sprint": false,
+        "map":"https://media.formula1.com/image/upload/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Hungary_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
@@ -328,6 +340,7 @@
         "round": "13",
         "name": "Belgian GP",
         "sprint": true,
+        "map":"https://media.formula1.com/image/upload/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Belgium_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
@@ -355,6 +368,7 @@
         "round": "14",
         "name": "Dutch GP",
         "sprint": false,
+        "map":"https://media.formula1.com/image/upload/f_auto/q_auto/v1677244984/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Netherlands_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
@@ -382,6 +396,7 @@
         "round": "15",
         "name": "Italian GP",
         "sprint": false,
+        "map":"https://media.formula1.com/image/upload/f_auto/q_auto/v1677244987/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Italy_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
@@ -409,6 +424,7 @@
         "round": "16",
         "name": "Singapore GP",
         "sprint": false,
+        "map":"https://media.formula1.com/image/upload/f_auto/q_auto/v1677249949/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Singapore_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
@@ -436,6 +452,7 @@
         "round": "17",
         "name": "Japanese GP",
         "sprint": false,
+        "map":"https://media.formula1.com/image/upload/f_auto/q_auto/v1677250050/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Japan_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
@@ -463,6 +480,7 @@
         "round": "18",
         "name": "Qatar GP",
         "sprint": true,
+        "map":"https://media.formula1.com/image/upload/f_auto/q_auto/v1677244985/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Qatar_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
@@ -490,6 +508,7 @@
         "round": "19",
         "name": "United States GP",
         "sprint": true,
+        "map":"https://media.formula1.com/image/upload/f_auto/q_auto/v1677244984/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/USA_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
@@ -517,6 +536,7 @@
         "round": "20",
         "name": "Mexico City GP",
         "sprint": false,
+        "map":"https://media.formula1.com/image/upload/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Mexico_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
@@ -544,6 +564,7 @@
         "round": "21",
         "name": "Brazilian GP",
         "sprint": true,
+        "map":"https://media.formula1.com/image/upload/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Brazil_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
@@ -571,6 +592,7 @@
         "round": "22",
         "name": "Las Vegas GP",
         "sprint": false,
+        "map":"https://media.formula1.com/image/upload/f_auto/q_auto/v1677249930/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Las_Vegas_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
@@ -598,6 +620,7 @@
         "round": "23",
         "name": "Abu Dhabi GP",
         "sprint": false,
+        "map":"https://media.formula1.com/image/upload/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Abu_Dhabi_Circuit.png.transform/7col/image.png",
         "session": [
           {
             "name": "FP1",
