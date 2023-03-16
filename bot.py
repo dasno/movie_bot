@@ -12,6 +12,7 @@ from discord.ext import tasks
 import configparser
 
 
+
 def CreateSettingsIni():
     try:
         file = open("settings.conf", "x")
@@ -62,17 +63,32 @@ for x in jellyClient.GetAllLibs().Items:
 
 LibEnum = enum.Enum('Lib', LibList)
 
-@tree.command(name = "hello", description = "Say Hello", guild=discord.Object(id=SERVER_ID)) 
-async def hello_command(interaction):
+@tree.command(name = "hello", description = "Says Hello to user", guild=discord.Object(id=SERVER_ID)) 
+async def helloCommand(interaction):
+
     await interaction.response.send_message("Hello, " + interaction.user.name + "!")
 
-@tree.command(name= "help", description = "Prints help message",guild=discord.Object(id=SERVER_ID))
-async def helpcommand(interaction):
-    msg = "Hey, " + interaction.user.name + "!\n These are commands you can use with this bot:\n```\\hello\n\\f1\n\\jelly```"
-    await interaction.response.send_message(msg)
+@tree.command(name= "help", description = "Shows availible commands with their description",guild=discord.Object(id=SERVER_ID))
+async def helpCommand(interaction):
 
-@tree.command(name = "jelly", description= "Jellyfin commands", guild=discord.Object(id=SERVER_ID), )
+    msg = interaction.user.name+", bot currently supports these commands:\n\n"
+
+    for com in tree.walk_commands(guild=discord.Object(id=SERVER_ID)):
+        msg += "**\\"+com.name+"**\n\t"+com.description+"\n\n"
+
+    await interaction.response.send_message(content = msg, ephemeral=True)
+
+@tree.command(name= "issues", description = "Link to add/view known issues on GitHub",guild=discord.Object(id=SERVER_ID))
+async def issueCommand(interaction):
+
+    issues_link = 'https://github.com/dasno/movie_bot/issues'
+    msg = "You can post/review bot issues here:\n"+issues_link
+
+    await interaction.response.send_message(content = msg, ephemeral=True)
+
+@tree.command(name = "jelly", description= "Commands to utilize Jellyfin server library", guild=discord.Object(id=SERVER_ID), )
 async def jellyLibs(interaction, library:LibEnum):
+
     lib = jellyClient.GetLibByName(str(library.name))
     item = jellyClient.GetLibraryItems(lib.Id)
     itemList = ""
@@ -82,8 +98,9 @@ async def jellyLibs(interaction, library:LibEnum):
 
     await interaction.response.send_message(str(itemList))
 
-@tree.command(name = "f1", description= "F1 commands", guild=discord.Object(id=SERVER_ID))
+@tree.command(name = "f1", description= "Commands to show race results, standings and upcoming F1 races", guild=discord.Object(id=SERVER_ID))
 async def F1Command(interaction, option:str, option2:str=None):
+
     if option == "when":
          await interaction.response.send_message(FormulaFeature.FindClosestSession(jsonDict, option2))
          return
