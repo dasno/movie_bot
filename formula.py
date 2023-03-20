@@ -19,13 +19,11 @@ class FormulaFeature():
                 if (y.StartTime) >= datetime.now(timezone.utc):
                     return x,y
     
-    
-
-
     @staticmethod
     def GetAllGPs(data:Any) -> List[GrandPrix]:
         return Calendar.from_dict(data).GPs
     
+    @staticmethod
     def FindClosestPastRace(data) -> GrandPrix:
         parsed = FormulaFeature.GetAllGPs(data)
         last:Any
@@ -33,20 +31,20 @@ class FormulaFeature():
             if x.Sessions[4].StartTime + timedelta(minutes=180) > datetime.now(timezone.utc):
                 return last
             last = x
-    
+    @staticmethod
     def GetGPByName(data:Any, string:str) -> GrandPrix:
         GPs = FormulaFeature.GetAllGPs(data)
         for x in GPs:
             if(x.Name == string):
                 return x
-        
+    @staticmethod   
     def GetGPByRound(data:Any, round:int) -> GrandPrix:
         GPs = FormulaFeature.GetAllGPs(data)
         for x in GPs:
             if(x.Round == round):
                 return x
             
-        
+    @staticmethod   
     def GetFormattedSessionTime(session:Session, tzone) -> str:
         if tzone == None or "":
             tzone = DEFAULT_TZONE
@@ -55,12 +53,13 @@ class FormulaFeature():
             return session.StartTime.astimezone(pytz.timezone(tzone)).strftime("%d.%m.%Y %H:%M %Z")
         except pytz.UnknownTimeZoneError:
             return None
-    
+    @staticmethod
     def GetStandings() -> List[Standings.DriverStanding]:
         response = requests.get('http://ergast.com/api/f1/current/driverStandings.json')
         stand = Standings.Root.from_dict(json.loads(response.content))
         return stand.MRData.StandingsTable
     
+    @staticmethod
     def GetRaceStandingsByRound(round:int) -> Results.Race:
         response = requests.get("https://ergast.com/api/f1/current/{round}/results.json".format(round=str(round)))
         try:
@@ -72,12 +71,13 @@ class FormulaFeature():
             return results.MRData.RaceTable.Races[0]
         except:
             return None
-    
+    @staticmethod
     def GetLatestResults(data):
         race = FormulaFeature.FindClosestPastRace(data)
         standings = FormulaFeature.GetRaceStandingsByRound(race.Round)
         return standings.Results
-
+    
+    @staticmethod
     def FormatResults(results:List[Results.Result]) -> str:
         response:str = ""
         for x in results:
