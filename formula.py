@@ -87,8 +87,8 @@ class FormulaFeature():
     @staticmethod
     def IsOngoing(session:Session) -> bool:
         if session.Name == "Race":
-            return session.StartTime + timedelta(minutes=160) < datetime.now()
-        return session.StartTime + timedelta(minutes=60) < datetime.now()
+            return session.StartTime + timedelta(minutes=160) < datetime.now(timezone.utc)
+        return (session.StartTime + timedelta(minutes=60)) < datetime.now(timezone.utc)
 
 
 
