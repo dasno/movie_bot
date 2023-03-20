@@ -12,7 +12,7 @@ from Classes import Standings, Results
 class FormulaFeature():
 
     @staticmethod
-    def FindClosestSession(data:Any, tzone):
+    def FindClosestSession(data:Any):
         parsed = FormulaFeature.GetAllGPs(data)
         for x in parsed:
             for y in x.Sessions:
