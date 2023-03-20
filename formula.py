@@ -84,7 +84,7 @@ class FormulaFeature():
                 response += "\n{position}. {firstName} {lastName} - {points}".format(position=x.position, firstName=x.Driver.givenName, lastName=x.Driver.familyName, points=x.points)
         return response
     
-    @staticmethod
+    @staticmethod #untested
     def IsOngoing(session:Session) -> bool:
         if session.Name == "Race":
             return session.StartTime + timedelta(minutes=160) < datetime.now(timezone.utc)
