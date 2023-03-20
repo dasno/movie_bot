@@ -139,7 +139,10 @@ class Result:
             _Time = Time("DNF", "DNF")
         else:
             _Time = Time.from_dict(obj.get("Time"))
-        _FastestLap = FastestLap.from_dict(obj.get("FastestLap"))
+        try:
+            _FastestLap = FastestLap.from_dict(obj.get("FastestLap"))
+        except AttributeError:
+            _FastestLap = None
         return Result(_number, _position, _positionText, _points, _Driver, _Constructor, _grid, _laps, _status, _Time, _FastestLap)
 
 @dataclass

@@ -52,7 +52,6 @@ class FormulaFeature():
             
         
     def GetFormattedSessionTime(session:Session, tzone) -> str:
-        print("Selected timezone: {tzone}".format(tzone=tzone))
         if tzone == None or "":
             tzone = 'Europe/Bratislava'
 
@@ -67,15 +66,15 @@ class FormulaFeature():
         return stand.MRData.StandingsTable
     
     def GetRaceStandingsByRound(round:int) -> Results.Race:
-        response = requests.get("https://ergast.com/api/f1/current/{round}/results.json".format(round=round))
+        response = requests.get("https://ergast.com/api/f1/current/{round}/results.json".format(round=str(round)))
         try:
             results = Results.Root.from_dict(json.loads(response.content))
         except TypeError:
-            print("TypeError - GetRaceStandings - Querried round : {round}\n{content}".format(round=round, content=response.content))
+            print("TypeError - GetRaceStandings - Querried round : {round}\n".format(round=round))
             return None
         try:
             return results.MRData.RaceTable.Races[0]
-        except IndexError:
+        except:
             return None
     
     def GetLatestResults(data):
