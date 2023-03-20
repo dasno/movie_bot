@@ -107,6 +107,8 @@ async def F1Command(interaction, option:str, option2:str=None):
          response = "Closest session is **{gp} {session_name}** @ {session_start}".format(session_name=session.Name,
                                                                                           session_start=FormulaFeature.GetFormattedSessionTime(session, option2),
                                                                                           gp=gp.Name)
+         if FormulaFeature.IsOngoing(session):
+             response += "\n:red_circle: **Session is live**"
          await interaction.response.send_message(response)
          return
        
