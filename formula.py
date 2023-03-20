@@ -17,11 +17,7 @@ class FormulaFeature():
         for x in parsed:
             for y in x.Sessions:
                 if (y.StartTime) >= datetime.now(timezone.utc):
-                    res = FormulaFeature.GetFormattedSessionTime(y, tzone)
-                    if res == None:
-                        return "Incorrect timezone selected.\nTo see available timezones, go to: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones\nUse canonical names"
-
-                    return "Next session is: " + x.Name + " - " + y.Name + " @ " + res
+                    return y
     
     
 
