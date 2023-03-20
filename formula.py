@@ -6,7 +6,7 @@ import json
 import requests
 from Classes import Standings, Results
 
-
+DEFAULT_TZONE = "Europe/Bratislava"
 
 
 class FormulaFeature():
@@ -17,7 +17,7 @@ class FormulaFeature():
         for x in parsed:
             for y in x.Sessions:
                 if (y.StartTime) >= datetime.now(timezone.utc):
-                    return y
+                    return x,y
     
     
 
@@ -49,7 +49,7 @@ class FormulaFeature():
         
     def GetFormattedSessionTime(session:Session, tzone) -> str:
         if tzone == None or "":
-            tzone = 'Europe/Bratislava'
+            tzone = DEFAULT_TZONE
 
         try:
             return session.StartTime.astimezone(pytz.timezone(tzone)).strftime("%d.%m.%Y %H:%M %Z")
