@@ -103,7 +103,11 @@ async def jellyLibs(interaction, library:LibEnum):
 async def F1Command(interaction, option:str, option2:str=None):
 
     if option == "when":
-         await interaction.response.send_message(FormulaFeature.FindClosestSession(jsonDict, option2))
+         gp,session = FormulaFeature.FindClosestSession(jsonDict)
+         response = "Closest session is **{gp} {session_name}** @ {session_start}".format(session_name=session.Name,
+                                                                                          session_start=FormulaFeature.GetFormattedSessionTime(session, option2),
+                                                                                          gp=gp.Name)
+         await interaction.response.send_message(response)
          return
        
     if option == "gp":
