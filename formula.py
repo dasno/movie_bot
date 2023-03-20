@@ -18,10 +18,10 @@ class FormulaFeature():
             for y in x.Sessions:
                 if (y.StartTime) >= datetime.now(timezone.utc):
                     res = FormulaFeature.GetFormattedSessionTime(y, tzone)
-                    if res == "":
+                    if res == None:
                         return "Incorrect timezone selected.\nTo see available timezones, go to: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones\nUse canonical names"
 
-                    return "Next session is: " + x.Name + " - " + y.Name + " @ " + FormulaFeature.GetFormattedSessionTime(y,tzone)
+                    return "Next session is: " + x.Name + " - " + y.Name + " @ " + res
     
     
 
@@ -58,7 +58,7 @@ class FormulaFeature():
         try:
             return session.StartTime.astimezone(pytz.timezone(tzone)).strftime("%d.%m.%Y %H:%M %Z")
         except pytz.UnknownTimeZoneError:
-            return ""
+            return None
     
     def GetStandings() -> List[Standings.DriverStanding]:
         response = requests.get('http://ergast.com/api/f1/current/driverStandings.json')
