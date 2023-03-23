@@ -7,6 +7,9 @@ import requests
 from Classes import DriverStandings, Results, ConstructorStandings
 
 DEFAULT_TZONE = "Europe/Bratislava"
+DRIVER_STANDINGS_URL = 'http://ergast.com/api/f1/current/driverStandings.json'
+CONSTRUCTOR_STANDINGS_URL = 'https://ergast.com/api/f1/current/constructorStandings'
+RACE_RESULTS_URL = "https://ergast.com/api/f1/current/{round}/results.json"
 
 
 class FormulaFeature():
@@ -55,13 +58,13 @@ class FormulaFeature():
             return None
     @staticmethod
     def GetDriverStandings() -> List[DriverStandings.DriverStanding]:
-        response = requests.get('http://ergast.com/api/f1/current/driverStandings.json')
+        response = requests.get(DRIVER_STANDINGS_URL)
         stand = DriverStandings.Root.from_dict(json.loads(response.content))
         return stand.MRData.StandingsTable
     
     @staticmethod
     def GetRaceResultsByRound(round:int) -> Results.Race:
-        response = requests.get("https://ergast.com/api/f1/current/{round}/results.json".format(round=str(round)))
+        response = requests.get(RACE_RESULTS_URL.format(round=str(round)))
         try:
             results = Results.Root.from_dict(json.loads(response.content))
         except TypeError:
@@ -89,6 +92,12 @@ class FormulaFeature():
         if session.Name == "Race":
             return session.StartTime + timedelta(minutes=160) < datetime.now(timezone.utc)
         return (session.StartTime + timedelta(minutes=60)) < datetime.now(timezone.utc)
+    
+    @staticmethod
+    def GetConstructorStandings() -> List[ConstructorStandings.ConstructorStanding]:
+        response = requests.get(CONSTRUCTOR_STANDINGS_URL)
+        stand = DriverStandings.Root.from_dict(json.loads(response.content))
+        return stand.MRData.StandingsTable
 
 
 
