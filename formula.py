@@ -4,7 +4,7 @@ from typing import Any, List
 import pytz
 import json
 import requests
-from Classes import Standings, Results
+from Classes import DriverStandings, Results, ConstructorStandings
 
 DEFAULT_TZONE = "Europe/Bratislava"
 
@@ -54,13 +54,13 @@ class FormulaFeature():
         except pytz.UnknownTimeZoneError:
             return None
     @staticmethod
-    def GetStandings() -> List[Standings.DriverStanding]:
+    def GetDriverStandings() -> List[DriverStandings.DriverStanding]:
         response = requests.get('http://ergast.com/api/f1/current/driverStandings.json')
-        stand = Standings.Root.from_dict(json.loads(response.content))
+        stand = DriverStandings.Root.from_dict(json.loads(response.content))
         return stand.MRData.StandingsTable
     
     @staticmethod
-    def GetRaceStandingsByRound(round:int) -> Results.Race:
+    def GetRaceResultsByRound(round:int) -> Results.Race:
         response = requests.get("https://ergast.com/api/f1/current/{round}/results.json".format(round=str(round)))
         try:
             results = Results.Root.from_dict(json.loads(response.content))
@@ -74,7 +74,7 @@ class FormulaFeature():
     @staticmethod
     def GetLatestResults(data):
         race = FormulaFeature.FindClosestPastRace(data)
-        standings = FormulaFeature.GetRaceStandingsByRound(race.Round)
+        standings = FormulaFeature.GetRaceResultsByRound(race.Round)
         return standings.Results
     
     @staticmethod

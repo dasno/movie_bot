@@ -131,7 +131,7 @@ async def F1Command(interaction, option:str, option2:str=None):
         
         sessionString = ""
         
-        results = FormulaFeature.GetRaceStandingsByRound(int(res.Round))
+        results = FormulaFeature.GetRaceResultsByRound(int(res.Round))
         for x in res.Sessions:
             sessionString += "{sessionName} @ {sessionTime}\n".format(sessionName = x.Name, sessionTime = FormulaFeature.GetFormattedSessionTime(x, None))
     
@@ -150,7 +150,7 @@ async def F1Command(interaction, option:str, option2:str=None):
     
     if option == "standings":
         
-        standings = FormulaFeature.GetStandings()
+        standings = FormulaFeature.GetDriverStandings()
         result = "Season {seasonYear}:\n".format(seasonYear = standings.season)
         for x in standings.StandingsLists[0].DriverStandings:
             result += "{pos}. {driverName} {points}\n".format(pos = x.position, driverName = x.Driver.familyName, points = x.points)
