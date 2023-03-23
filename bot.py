@@ -182,6 +182,10 @@ async def F1WhenAutocomplete(
             app_commands.Choice(name=option.Name, value=option.Name)
             for option in options if current.lower() in option.Name.lower()
         ]
+    if interaction.namespace['option'] == "standings":
+        options = ["drivers", "constructors"]
+        return [app_commands.Choice(name=option, value = option) for option in options]
+
 
 
 
