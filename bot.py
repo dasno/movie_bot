@@ -152,12 +152,12 @@ async def F1Command(interaction, option:str, option2:str=None):
         
         if option2 == None or option2 == "drivers":
             standings = FormulaFeature.GetDriverStandings()
-            result = "**Driver Standings**\nSeason {seasonYear}:\n".format(seasonYear = standings.season)
+            result = "**{seasonYear} Driver Standings**:\n".format(seasonYear = standings.season)
             for x in standings.StandingsLists[0].DriverStandings:
                 result += "{pos}. {driverName} - {points}\n".format(pos = x.position, driverName = x.Driver.familyName, points = x.points)
         else:
             standings = FormulaFeature.GetConstructorStandings()
-            result = "**Constructor Standings**\nSeason {seasonYear}:\n".format(seasonYear = standings.season)
+            result = "**{seasonYear} Constructor Standings**:\n".format(seasonYear = standings.season)
             for x in standings.StandingsLists[0].ConstructorStandings:
                 result += "{pos}. {constructor} - {points}\n".format(pos = x.position, constructor = x.Constructor.name, points = x.points)
         await interaction.response.send_message(result)
