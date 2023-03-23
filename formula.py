@@ -8,7 +8,7 @@ from Classes import DriverStandings, Results, ConstructorStandings
 
 DEFAULT_TZONE = "Europe/Bratislava"
 DRIVER_STANDINGS_URL = 'http://ergast.com/api/f1/current/driverStandings.json'
-CONSTRUCTOR_STANDINGS_URL = 'https://ergast.com/api/f1/current/constructorStandings'
+CONSTRUCTOR_STANDINGS_URL = 'https://ergast.com/api/f1/current/constructorStandings.json'
 RACE_RESULTS_URL = "https://ergast.com/api/f1/current/{round}/results.json"
 
 
@@ -96,7 +96,7 @@ class FormulaFeature():
     @staticmethod
     def GetConstructorStandings() -> List[ConstructorStandings.ConstructorStanding]:
         response = requests.get(CONSTRUCTOR_STANDINGS_URL)
-        stand = DriverStandings.Root.from_dict(json.loads(response.content))
+        stand = ConstructorStandings.Root.from_dict(json.loads(response.content))
         return stand.MRData.StandingsTable
 
 

@@ -150,11 +150,16 @@ async def F1Command(interaction, option:str, option2:str=None):
     
     if option == "standings":
         
-        standings = FormulaFeature.GetDriverStandings()
-        result = "Season {seasonYear}:\n".format(seasonYear = standings.season)
-        for x in standings.StandingsLists[0].DriverStandings:
-            result += "{pos}. {driverName} {points}\n".format(pos = x.position, driverName = x.Driver.familyName, points = x.points)
-
+        if option2 == None or option2 == "drivers":
+            standings = FormulaFeature.GetDriverStandings()
+            result = "**Driver Standings**\nSeason {seasonYear}:\n".format(seasonYear = standings.season)
+            for x in standings.StandingsLists[0].DriverStandings:
+                result += "{pos}. {driverName} {points}\n".format(pos = x.position, driverName = x.Driver.familyName, points = x.points)
+        else:
+            standings = FormulaFeature.GetConstructorStandings()
+            result = "**Constructor Standings**\nSeason {seasonYear}:\n".format(seasonYear = standings.season)
+            for x in standings.StandingsLists[0].ConstructorStandings:
+                result += "{pos}. {constructor} {points}\n".format(pos = x.position, constructor = x.Constructor.name, points = x.points)
         await interaction.response.send_message(result)
         return
     
@@ -183,7 +188,7 @@ async def F1WhenAutocomplete(
             for option in options if current.lower() in option.Name.lower()
         ]
     if interaction.namespace['option'] == "standings":
-        options = ["drivers", "constructors"]
+        options = ["driver", "constructor"]
         return [app_commands.Choice(name=option, value = option) for option in options]
 
 
