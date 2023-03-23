@@ -131,7 +131,7 @@ async def F1Command(interaction, option:str, option2:str=None):
         
         sessionString = ""
         
-        results = FormulaFeature.GetRaceStandingsByRound(int(res.Round))
+        results = FormulaFeature.GetRaceResultsByRound(int(res.Round))
         for x in res.Sessions:
             sessionString += "{sessionName} @ {sessionTime}\n".format(sessionName = x.Name, sessionTime = FormulaFeature.GetFormattedSessionTime(x, None))
     
@@ -150,11 +150,16 @@ async def F1Command(interaction, option:str, option2:str=None):
     
     if option == "standings":
         
-        standings = FormulaFeature.GetStandings()
-        result = "Season {seasonYear}:\n".format(seasonYear = standings.season)
-        for x in standings.StandingsLists[0].DriverStandings:
-            result += "{pos}. {driverName} {points}\n".format(pos = x.position, driverName = x.Driver.familyName, points = x.points)
-
+        if option2 == None or option2 == "drivers":
+            standings = FormulaFeature.GetDriverStandings()
+            result = "**{seasonYear} Driver Standings**:\n".format(seasonYear = standings.season)
+            for x in standings.StandingsLists[0].DriverStandings:
+                result += "{pos}. {driverName} - {points}\n".format(pos = x.position, driverName = x.Driver.familyName, points = x.points)
+        else:
+            standings = FormulaFeature.GetConstructorStandings()
+            result = "**{seasonYear} Constructor Standings**:\n".format(seasonYear = standings.season)
+            for x in standings.StandingsLists[0].ConstructorStandings:
+                result += "{pos}. {constructor} - {points}\n".format(pos = x.position, constructor = x.Constructor.name, points = x.points)
         await interaction.response.send_message(result)
         return
     
@@ -182,6 +187,10 @@ async def F1WhenAutocomplete(
             app_commands.Choice(name=option.Name, value=option.Name)
             for option in options if current.lower() in option.Name.lower()
         ]
+    if interaction.namespace['option'] == "standings":
+        options = ["driver", "constructor"]
+        return [app_commands.Choice(name=option, value = option) for option in options]
+
 
 
 

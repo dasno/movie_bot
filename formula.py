@@ -4,9 +4,12 @@ from typing import Any, List
 import pytz
 import json
 import requests
-from Classes import Standings, Results
+from Classes import DriverStandings, Results, ConstructorStandings
 
 DEFAULT_TZONE = "Europe/Bratislava"
+DRIVER_STANDINGS_URL = 'http://ergast.com/api/f1/current/driverStandings.json'
+CONSTRUCTOR_STANDINGS_URL = 'https://ergast.com/api/f1/current/constructorStandings.json'
+RACE_RESULTS_URL = "https://ergast.com/api/f1/current/{round}/results.json"
 
 
 class FormulaFeature():
@@ -54,14 +57,14 @@ class FormulaFeature():
         except pytz.UnknownTimeZoneError:
             return None
     @staticmethod
-    def GetStandings() -> List[Standings.DriverStanding]:
-        response = requests.get('http://ergast.com/api/f1/current/driverStandings.json')
-        stand = Standings.Root.from_dict(json.loads(response.content))
+    def GetDriverStandings() -> List[DriverStandings.DriverStanding]:
+        response = requests.get(DRIVER_STANDINGS_URL)
+        stand = DriverStandings.Root.from_dict(json.loads(response.content))
         return stand.MRData.StandingsTable
     
     @staticmethod
-    def GetRaceStandingsByRound(round:int) -> Results.Race:
-        response = requests.get("https://ergast.com/api/f1/current/{round}/results.json".format(round=str(round)))
+    def GetRaceResultsByRound(round:int) -> Results.Race:
+        response = requests.get(RACE_RESULTS_URL.format(round=str(round)))
         try:
             results = Results.Root.from_dict(json.loads(response.content))
         except TypeError:
@@ -74,14 +77,53 @@ class FormulaFeature():
     @staticmethod
     def GetLatestResults(data):
         race = FormulaFeature.FindClosestPastRace(data)
-        standings = FormulaFeature.GetRaceStandingsByRound(race.Round)
+        standings = FormulaFeature.GetRaceResultsByRound(race.Round)
         return standings.Results
     
     @staticmethod
     def FormatResults(results:List[Results.Result]) -> str:
         response:str = ""
         for x in results:
-                response += "\n{position}. {firstName} {lastName} - {points}".format(position=x.position, firstName=x.Driver.givenName, lastName=x.Driver.familyName, points=x.points)
+            if x.position == "1":
+                position=":first_place:"
+            elif x.position == "2":
+                position=":second_place:"
+            elif x.position == "3":
+                position=":third_place:"
+            else:
+                position = x.position+"."
+            
+            if x.FastestLap == None:
+                fl = ""
+                points = x.points
+            
+            elif x.FastestLap.rank == "1" and int(x.position) <= 10:
+                print(x.FastestLap.rank)
+                fl = ":stopwatch:"
+                points = x.points
+                #TODO: return to this when api data is corrected.
+
+            elif x.FastestLap.rank == "1" and int(x.position) > 10:
+                fl = ":stopwatch:"
+                points = x.points
+            else:
+                fl = ""
+                points = x.points
+            
+            if x.Time.time == None:
+                if x.positionText == "R":
+                    time = "DNF"
+                else:
+                    time = x.status
+            else:
+                time = x.Time.time
+                
+            response += "\n{position}\t{firstName} {lastName} {fl}  {time}  - {points}".format(position=position,
+                                                                                    firstName=x.Driver.givenName,
+                                                                                    lastName=x.Driver.familyName,
+                                                                                    points=points,
+                                                                                    time=time,
+                                                                                    fl=fl)
         return response
     
     @staticmethod #untested
@@ -89,6 +131,12 @@ class FormulaFeature():
         if session.Name == "Race":
             return session.StartTime + timedelta(minutes=160) < datetime.now(timezone.utc)
         return (session.StartTime + timedelta(minutes=60)) < datetime.now(timezone.utc)
+    
+    @staticmethod
+    def GetConstructorStandings() -> List[ConstructorStandings.ConstructorStanding]:
+        response = requests.get(CONSTRUCTOR_STANDINGS_URL)
+        stand = ConstructorStandings.Root.from_dict(json.loads(response.content))
+        return stand.MRData.StandingsTable
 
 
 
