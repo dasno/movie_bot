@@ -136,7 +136,7 @@ class Result:
         _laps = str(obj.get("laps"))
         _status = str(obj.get("status"))
         if obj.get("Time") is None:
-            _Time = Time("DNF", "DNF")
+            _Time = Time(None, None)
         else:
             _Time = Time.from_dict(obj.get("Time"))
         try:

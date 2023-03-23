@@ -84,7 +84,46 @@ class FormulaFeature():
     def FormatResults(results:List[Results.Result]) -> str:
         response:str = ""
         for x in results:
-                response += "\n{position}. {firstName} {lastName} - {points}".format(position=x.position, firstName=x.Driver.givenName, lastName=x.Driver.familyName, points=x.points)
+            if x.position == "1":
+                position=":first_place:"
+            elif x.position == "2":
+                position=":second_place:"
+            elif x.position == "3":
+                position=":third_place:"
+            else:
+                position = x.position+"."
+            
+            if x.FastestLap == None:
+                fl = ""
+                points = x.points
+            
+            elif x.FastestLap.rank == "1" and int(x.position) <= 10:
+                print(x.FastestLap.rank)
+                fl = ":stopwatch:"
+                points = x.points
+                #TODO: return to this when api data is corrected.
+
+            elif x.FastestLap.rank == "1" and int(x.position) > 10:
+                fl = ":stopwatch:"
+                points = x.points
+            else:
+                fl = ""
+                points = x.points
+            
+            if x.Time.time == None:
+                if x.positionText == "R":
+                    time = "DNF"
+                else:
+                    time = x.status
+            else:
+                time = x.Time.time
+                
+            response += "\n{position}\t{firstName} {lastName} {fl}  {time}  - {points}".format(position=position,
+                                                                                    firstName=x.Driver.givenName,
+                                                                                    lastName=x.Driver.familyName,
+                                                                                    points=points,
+                                                                                    time=time,
+                                                                                    fl=fl)
         return response
     
     @staticmethod #untested
