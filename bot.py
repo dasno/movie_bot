@@ -11,35 +11,48 @@ import streams
 from discord.ext import tasks
 import configparser
 import urllib.request
+import requests
 
 
-
-def CreateSettingsIni():
-    try:
-        file = open("settings.conf", "x")
-    except:
-        print("Settings found.")
-        return
-    filetext = "[BOT]\nDiscordToken =\nJellyApi =\nJellyAddress =\nBot_UID =\nDiscordServerID =\nStreamIP= "
-    file.write(filetext)
-    print("File created. Fill the settings file.")
-    exit(2)
 
 def LoadSettings():
     config = configparser.ConfigParser()
+
+    try:
+        config_file = open('settings.conf', 'r')
+    except OSError:
+        config['BOT'] = {"Discord_Token" : '',
+                         'Jelly_API': '',
+                         'Jelly_Address': '',
+                         'Bot_UID': '',
+                         'Discord_ServerID': '',
+                         'Stream_IP' : '',
+                         'F1_Calendar_Json': ''}
+        with open('settings.conf', 'w') as config_file:
+            config.write(config_file)
+        print("Settings file not found. Template settings file was created.")
+        exit(2)
+
+
+
     config.read('settings.conf')
     config.sections()
     return config
 
-CreateSettingsIni()
 settings = LoadSettings()
 
-API_KEY = settings['BOT']['JellyApi']
-ADDRESS = settings['BOT']['JellyAddress']
-JELLY_UID = settings['BOT']['Bot_UID']
-TOKEN = settings['BOT']['DiscordToken']
-SERVER_ID = settings['BOT']['DiscordServerID']
-STREAM_URL = settings['BOT']['StreamIP']
+try:
+    API_KEY = settings['BOT']['Jelly_Api']
+    ADDRESS = settings['BOT']['Jelly_Address']
+    JELLY_UID = settings['BOT']['Bot_UID']
+    TOKEN = settings['BOT']['Discord_Token']
+    SERVER_ID = settings['BOT']['Discord_ServerID']
+    STREAM_URL = settings['BOT']['Stream_IP']
+    CALENDAR_JSON = settings['BOT']['F1_Calendar_Json']
+except KeyError as e:
+    print("Missing config line")
+    exit(4)
+
 
 
 if not API_KEY or not ADDRESS or not JELLY_UID or not TOKEN or not SERVER_ID or not STREAM_URL:
@@ -54,8 +67,19 @@ client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 jellyClient = Jellyapi(ADDRESS,API_KEY,JELLY_UID)
 
-
-jsonDict = json.load(open('f1times.json'))
+try:
+    jsonData = requests.get(CALENDAR_JSON).content
+except:
+    try:
+        jsonData = open(CALENDAR_JSON, 'r').read()
+    except OSError:
+        print("Invalid calendar JSON location. Use URL or path to the file")
+        exit(4)
+try:
+    jsonDict = json.loads(jsonData)
+except:
+    print("Error in calendar json file")
+    exit(1)
 GPList = FormulaFeature.GetAllGPs(jsonDict)
 
 LibList = []

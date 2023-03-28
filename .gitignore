@@ -3,5 +3,4 @@ env
 *__pycache__*
 *.out
 *.json
-!f1times.json
 settings.conf
