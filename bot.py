@@ -52,7 +52,7 @@ except KeyError as e:
     print("Missing config line")
     exit(4)
 
-SURVEILANCE_TARGET = settings['BOT']['Under_Surveilance']
+SURVEILANCE_TARGET = settings['BOT']['Under_Surveilance'].split(',')
 
 if not API_KEY or not ADDRESS or not JELLY_UID or not TOKEN or not SERVER_ID or not STREAM_URL:
     print("Missing settings values")
@@ -236,7 +236,7 @@ async def on_message(message):
 
 @client.event
 async def on_message_delete(message):
-    if message.author.id == SURVEILANCE_TARGET:
+    if message.author.id in SURVEILANCE_TARGET:
         await message.channel.send(":reverse: {msg}".format(msg=message.text))
 
 client.run(TOKEN)
