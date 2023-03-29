@@ -1,11 +1,10 @@
-from email.policy import default
 import discord
 from discord import app_commands
 from jellyapiclient import Jellyapi
 import enum
 from formula import FormulaFeature
 import json
-from typing import Literal, List
+from typing import List
 from discord.ext import tasks
 import configparser
 import requests
