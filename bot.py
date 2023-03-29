@@ -48,12 +48,11 @@ try:
     SERVER_ID = settings['BOT']['Discord_ServerID']
     STREAM_URL = settings['BOT']['Stream_IP']
     CALENDAR_JSON = settings['BOT']['F1_Calendar_Json']
-    SURVEILANCE_TARGET = settings['BOT']['UnderSurveilance']
 except KeyError as e:
     print("Missing config line")
     exit(4)
 
-
+SURVEILANCE_TARGET = settings['BOT']['Under_Surveilance']
 
 if not API_KEY or not ADDRESS or not JELLY_UID or not TOKEN or not SERVER_ID or not STREAM_URL:
     print("Missing settings values")
