@@ -236,7 +236,8 @@ async def on_message(message):
 
 @client.event
 async def on_message_delete(message):
-    if message.author.id in SURVEILANCE_TARGET:
-        await message.channel.send(":reverse: {msg}".format(msg=message.text))
+    if str(message.author.id) in SURVEILANCE_TARGET:
+        await message.channel.send("<:reverse:1090742023801286777> {usr}: {msg}".format(msg=message.content,
+                                                                                        usr=message.author.mention))
 
 client.run(TOKEN)
