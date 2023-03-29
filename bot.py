@@ -51,7 +51,7 @@ except KeyError as e:
     print("Missing config line")
     exit(4)
 
-SURVEILANCE_TARGET = settings['BOT']['Under_Surveilance'].split(',')
+surveilance_target = settings['BOT']['Under_Surveilance'].split(',')
 
 if not API_KEY or not ADDRESS or not JELLY_UID or not TOKEN or not SERVER_ID or not STREAM_URL:
     print("Missing settings values")
@@ -85,6 +85,13 @@ for x in jellyClient.GetAllLibs().Items:
     LibList.append(str(x.Name))
 
 LibEnum = enum.Enum('Lib', LibList)
+
+@tree.command(name = "surveil", description = "Setup survailane target", guild=discord.Object(id=SERVER_ID)) 
+async def surveil(interaction, option:str):
+    global surveilance_target
+    surveilance_target = option.split(',')
+    await interaction.response.send_message("Setting changed")
+
 
 @tree.command(name = "hello", description = "Says Hello to user", guild=discord.Object(id=SERVER_ID)) 
 async def helloCommand(interaction):
@@ -232,10 +239,12 @@ async def on_message(message):
     if 'oscar' in message.content.lower():
         print("oscar detected")
         await message.channel.send('Fuck the Oscars!')
+    
+
 
 @client.event
 async def on_message_delete(message):
-    if str(message.author.id) in SURVEILANCE_TARGET:
+    if str(message.author.id) in surveilance_target:
         await message.channel.send("<:reverse:1090742023801286777> {usr}: {msg}".format(msg=message.content,
                                                                                         usr=message.author.mention))
 
