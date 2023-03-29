@@ -24,7 +24,8 @@ def LoadSettings():
                          'Bot_UID': '',
                          'Discord_ServerID': '',
                          'Stream_IP' : '',
-                         'F1_Calendar_Json': ''}
+                         'F1_Calendar_Json': '',
+                         'Under_Surveilance': ''}
         with open('settings.conf', 'w') as config_file:
             config.write(config_file)
         print("Settings file not found. Template settings file was created.")
@@ -38,6 +39,7 @@ def LoadSettings():
 
 settings = LoadSettings()
 
+
 try:
     API_KEY = settings['BOT']['Jelly_Api']
     ADDRESS = settings['BOT']['Jelly_Address']
@@ -46,6 +48,7 @@ try:
     SERVER_ID = settings['BOT']['Discord_ServerID']
     STREAM_URL = settings['BOT']['Stream_IP']
     CALENDAR_JSON = settings['BOT']['F1_Calendar_Json']
+    SURVEILANCE_TARGET = settings['BOT']['UnderSurveilance']
 except KeyError as e:
     print("Missing config line")
     exit(4)
@@ -231,5 +234,10 @@ async def on_message(message):
     if 'oscar' in message.content.lower():
         print("oscar detected")
         await message.channel.send('Fuck the Oscars!')
+
+@client.event
+async def on_message_delete(message):
+    if message.author.id == SURVEILANCE_TARGET:
+        await message.channel.send(":reverse: {msg}".format(msg=message.text))
 
 client.run(TOKEN)
