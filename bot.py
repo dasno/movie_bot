@@ -245,7 +245,9 @@ async def on_message(message):
 @client.event
 async def on_message_delete(message):
     if str(message.author.id) in surveilance_target:
+        files = [await file.to_file() for file in message.attachments]
         await message.channel.send("<:reverse:1090742023801286777> {usr}: {msg}".format(msg=message.content,
-                                                                                        usr=message.author.mention))
+                                                                                        usr=message.author.mention),
+                                                                                        files=files)
 
 client.run(TOKEN)
