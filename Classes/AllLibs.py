@@ -4,14 +4,14 @@ from dataclasses import dataclass
 
 @dataclass
 class Item:
-    Name: str
-    ServerId: str
-    Id: str
-    ChannelId: str
-    IsFolder: str
-    Type: str
-    CollectionType: str
-    LocationType: str
+    name: str
+    server_id: str
+    id: str
+    channel_id: str
+    is_folder: str
+    type: str
+    collection_type: str
+    location_type: str
 
     @staticmethod
     def from_dict(obj: Any) -> 'Item':

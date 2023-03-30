@@ -40,7 +40,7 @@ class Jellyapi:
         libs = self.get_all_libs()
         lib = None
         for i in libs.Items:
-            if(i.Name == libname):
+            if(i.name == libname):
                 lib = i
                 break
         return lib

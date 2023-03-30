@@ -82,7 +82,7 @@ gp_list = FormulaFeature.get_all_gps(json_dict)
 
 lib_list = []
 for x in jellyClient.get_all_libs().Items:
-    lib_list.append(str(x.Name))
+    lib_list.append(str(x.name))
 
 lib_enum = enum.Enum('Lib', lib_list)
 
@@ -120,7 +120,7 @@ async def issue_command(interaction):
 async def jelly_libs(interaction, library:lib_enum):
 
     lib = jellyClient.get_lib_by_name(str(library.name))
-    item = jellyClient.get_library_items(lib.Id)
+    item = jellyClient.get_library_items(lib.id)
     itemList = ""
 
     for x in item.Items:
