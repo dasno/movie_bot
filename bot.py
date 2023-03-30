@@ -81,7 +81,7 @@ except:
 gp_list = FormulaFeature.get_all_gps(json_dict)
 
 lib_list = []
-for x in jellyClient.GetAllLibs().Items:
+for x in jellyClient.get_all_libs().Items:
     lib_list.append(str(x.Name))
 
 lib_enum = enum.Enum('Lib', lib_list)
@@ -119,8 +119,8 @@ async def issue_command(interaction):
 @tree.command(name = "jelly", description= "Commands to utilize Jellyfin server library", guild=discord.Object(id=SERVER_ID), )
 async def jelly_libs(interaction, library:lib_enum):
 
-    lib = jellyClient.GetLibByName(str(library.name))
-    item = jellyClient.GetLibraryItems(lib.Id)
+    lib = jellyClient.get_lib_by_name(str(library.name))
+    item = jellyClient.get_library_items(lib.Id)
     itemList = ""
 
     for x in item.Items:

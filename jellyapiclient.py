@@ -10,34 +10,34 @@ import requests
 
 class Jellyapi:
     
-    def __init__(self, jellyAddress, jellyAPI, jellyUID):
-        self.API_KEY = jellyAPI
-        self.ADDRESS = jellyAddress
-        self.JELLY_UID = jellyUID
+    def __init__(self, jelly_address, jelly_api, jelly_uid):
+        self.API_KEY = jelly_api
+        self.ADDRESS = jelly_address
+        self.JELLY_UID = jelly_uid
         self.con = Connection(self.API_KEY, self.ADDRESS)
 
 
-    def GetAllLibs(self):
+    def get_all_libs(self):
         header = {'X-Emby-Token':self.API_KEY}
         target = self.con.Address + "/Items"
         response = requests.get(target,
                                 headers=header,
                                 params={'userId':self.JELLY_UID})
-        resJson = json.loads(response.content)
-        return AllLibs.from_dict(resJson)
+        response_json = json.loads(response.content)
+        return AllLibs.from_dict(response_json)
 
-    def GetLibraryItems(self, libId):
+    def get_library_items(self, libId):
         header = {'X-Emby-Token':self.API_KEY}
         target = self.con.Address + "/Items"
         response = requests.get(target,
                                 headers=header,
                                 params= {'userId':self.JELLY_UID,
                                         'parentId' : libId})
-        resJson = json.loads(response.content)
-        return LibraryItems.from_dict(resJson)
+        response_json = json.loads(response.content)
+        return LibraryItems.from_dict(response_json)
 
-    def GetLibByName(self, libname):
-        libs = self.GetAllLibs()
+    def get_lib_by_name(self, libname):
+        libs = self.get_all_libs()
         lib = None
         for i in libs.Items:
             if(i.Name == libname):
