@@ -11,7 +11,7 @@ import requests
 
 
 
-def LoadSettings():
+def load_settings():
     config = configparser.ConfigParser()
 
     try:
@@ -36,7 +36,7 @@ def LoadSettings():
     config.sections()
     return config
 
-settings = LoadSettings()
+settings = load_settings()
 
 
 try:
@@ -66,25 +66,25 @@ tree = app_commands.CommandTree(client)
 jellyClient = Jellyapi(ADDRESS,API_KEY,JELLY_UID)
 
 try:
-    jsonData = requests.get(CALENDAR_JSON).content
+    json_data = requests.get(CALENDAR_JSON).content
 except:
     try:
-        jsonData = open(CALENDAR_JSON, 'r').read()
+        json_data = open(CALENDAR_JSON, 'r').read()
     except OSError:
         print("Invalid calendar JSON location. Use URL or path to the file")
         exit(4)
 try:
-    jsonDict = json.loads(jsonData)
+    json_dict = json.loads(json_data)
 except:
     print("Error in calendar json file")
     exit(1)
-GPList = FormulaFeature.GetAllGPs(jsonDict)
+gp_list = FormulaFeature.get_all_gps(json_dict)
 
-LibList = []
+lib_list = []
 for x in jellyClient.GetAllLibs().Items:
-    LibList.append(str(x.Name))
+    lib_list.append(str(x.Name))
 
-LibEnum = enum.Enum('Lib', LibList)
+lib_enum = enum.Enum('Lib', lib_list)
 
 @tree.command(name = "surveil", description = "Setup survailane target", guild=discord.Object(id=SERVER_ID)) 
 async def surveil(interaction, option:str):
@@ -94,12 +94,12 @@ async def surveil(interaction, option:str):
 
 
 @tree.command(name = "hello", description = "Says Hello to user", guild=discord.Object(id=SERVER_ID)) 
-async def helloCommand(interaction):
+async def hello_command(interaction):
 
     await interaction.response.send_message("Hello, " + interaction.user.name + "!")
 
 @tree.command(name= "help", description = "Shows availible commands with their description",guild=discord.Object(id=SERVER_ID))
-async def helpCommand(interaction):
+async def help_command(interaction):
 
     msg = interaction.user.name+", bot currently supports these commands:\n\n"
 
@@ -109,7 +109,7 @@ async def helpCommand(interaction):
     await interaction.response.send_message(content = msg, ephemeral=True)
 
 @tree.command(name= "issues", description = "Link to add/view known issues on GitHub",guild=discord.Object(id=SERVER_ID))
-async def issueCommand(interaction):
+async def issue_command(interaction):
 
     issues_link = 'https://github.com/dasno/movie_bot/issues'
     msg = "You can post/review bot issues here:\n"+issues_link
@@ -117,7 +117,7 @@ async def issueCommand(interaction):
     await interaction.response.send_message(content = msg, ephemeral=True)
 
 @tree.command(name = "jelly", description= "Commands to utilize Jellyfin server library", guild=discord.Object(id=SERVER_ID), )
-async def jellyLibs(interaction, library:LibEnum):
+async def jelly_libs(interaction, library:lib_enum):
 
     lib = jellyClient.GetLibByName(str(library.name))
     item = jellyClient.GetLibraryItems(lib.Id)
@@ -129,40 +129,40 @@ async def jellyLibs(interaction, library:LibEnum):
     await interaction.response.send_message(str(itemList))
 
 @tree.command(name = "f1", description= "Commands to show race results, standings and upcoming F1 races", guild=discord.Object(id=SERVER_ID))
-async def F1Command(interaction, option:str, option2:str=None):
+async def f1_command(interaction, option:str, option2:str=None):
 
     if option == "when":
-         gp,session = FormulaFeature.FindClosestSession(jsonDict)
+         gp,session = FormulaFeature.find_closest_session(json_dict)
          response = "Closest session is **{gp} {session_name}** @ {session_start}".format(session_name=session.Name,
-                                                                                          session_start=FormulaFeature.GetFormattedSessionTime(session, option2),
+                                                                                          session_start=FormulaFeature.get_formatted_session_time(session, option2),
                                                                                           gp=gp.Name)
-         if FormulaFeature.IsOngoing(session):
+         if FormulaFeature.is_ongoing(session):
              response += "\n:red_circle: **Session is live**"
          await interaction.response.send_message(response)
          return
        
     if option == "gp":
-        res = FormulaFeature.GetGPByName(jsonDict, str(option2))
+        res = FormulaFeature.get_gp_by_name(json_dict, str(option2))
 
         if not res and option2 != None:
             await interaction.response.send_message("Incorrect argument provided. Try again with correct arguments")
             return
         
         if not option2:
-            race = FormulaFeature.FindClosestPastRace(jsonDict)
-            result = FormulaFeature.GetLatestResults(jsonDict)
+            race = FormulaFeature.find_closest_past_race(json_dict)
+            result = FormulaFeature.get_latest_results(json_dict)
             response =  """Last race was **{raceName}** on {raceDate}\n\n__**:checkered_flag:Results::checkered_flag:**__
             {results}
-            """.format(raceName = race.Name, raceDate = race.Sessions[4].StartTime.date().strftime("%d.%m.%Y"), results = FormulaFeature.FormatResults(result))
+            """.format(raceName = race.Name, raceDate = race.Sessions[4].StartTime.date().strftime("%d.%m.%Y"), results = FormulaFeature.format_results(result))
             await interaction.response.send_message(response)
             return
 
         
         sessionString = ""
         
-        results = FormulaFeature.GetRaceResultsByRound(int(res.Round))
+        results = FormulaFeature.get_race_results_by_round(int(res.Round))
         for x in res.Sessions:
-            sessionString += "{sessionName} @ {sessionTime}\n".format(sessionName = x.Name, sessionTime = FormulaFeature.GetFormattedSessionTime(x, None))
+            sessionString += "{sessionName} @ {sessionTime}\n".format(sessionName = x.Name, sessionTime = FormulaFeature.get_formatted_session_time(x, None))
     
         response = "__**Round {roundnr} - {GPName}**__ \nSessions:\n{sessionList}".format(roundnr = res.Round, GPName = res.Name, sessionList = sessionString)
         
@@ -171,7 +171,7 @@ async def F1Command(interaction, option:str, option2:str=None):
 
         if results != None:
             response += "\n__**:checkered_flag:Results::checkered_flag:**__"
-            response += FormulaFeature.FormatResults(results.Results)
+            response += FormulaFeature.format_results(results.Results)
         
         await interaction.response.send_message(response, embed=e)
         
@@ -180,12 +180,12 @@ async def F1Command(interaction, option:str, option2:str=None):
     if option == "standings":
         
         if option2 == None or option2 == "drivers":
-            standings = FormulaFeature.GetDriverStandings()
+            standings = FormulaFeature.get_driver_standings()
             result = "**{seasonYear} Driver Standings**:\n".format(seasonYear = standings.season)
             for x in standings.StandingsLists[0].DriverStandings:
                 result += "{pos}. {driverName} - {points}\n".format(pos = x.position, driverName = x.Driver.familyName, points = x.points)
         else:
-            standings = FormulaFeature.GetConstructorStandings()
+            standings = FormulaFeature.get_constructor_standings()
             result = "**{seasonYear} Constructor Standings**:\n".format(seasonYear = standings.season)
             for x in standings.StandingsLists[0].ConstructorStandings:
                 result += "{pos}. {constructor} - {points}\n".format(pos = x.position, constructor = x.Constructor.name, points = x.points)
@@ -196,18 +196,18 @@ async def F1Command(interaction, option:str, option2:str=None):
                     
     
 
-@F1Command.autocomplete('option')
-async def F1WhenAutocomplete(
+@f1_command.autocomplete('option')
+async def f1_when_autocomplete(
     interaction: discord.Interaction,current: str) -> List[app_commands.Choice[str]]:
     options = ['when', 'standings', 'gp']
     return [
         app_commands.Choice(name=option, value=option)
         for option in options if current.lower() in option.lower()
     ]
-@F1Command.autocomplete('option2')
-async def F1WhenAutocomplete(
+@f1_command.autocomplete('option2')
+async def f1_when_autocomplete(
     interaction: discord.Interaction,current: str) -> List[app_commands.Choice[str]]:
-    options = GPList
+    options = gp_list
     print(current, interaction.namespace['option'])
     if interaction.namespace['option'] == 'when':
         return []

@@ -15,40 +15,40 @@ RACE_RESULTS_URL = "https://ergast.com/api/f1/current/{round}/results.json"
 class FormulaFeature():
 
     @staticmethod
-    def FindClosestSession(data:Any):
-        parsed = FormulaFeature.GetAllGPs(data)
+    def find_closest_session(data:Any):
+        parsed = FormulaFeature.get_all_gps(data)
         for x in parsed:
             for y in x.Sessions:
                 if (y.StartTime) >= datetime.now(timezone.utc):
                     return x,y
     
     @staticmethod
-    def GetAllGPs(data:Any) -> List[GrandPrix]:
+    def get_all_gps(data:Any) -> List[GrandPrix]:
         return Calendar.from_dict(data).GPs
     
     @staticmethod
-    def FindClosestPastRace(data) -> GrandPrix:
-        parsed = FormulaFeature.GetAllGPs(data)
+    def find_closest_past_race(data) -> GrandPrix:
+        parsed = FormulaFeature.get_all_gps(data)
         last:Any
         for x in parsed:
             if x.Sessions[4].StartTime + timedelta(minutes=180) > datetime.now(timezone.utc):
                 return last
             last = x
     @staticmethod
-    def GetGPByName(data:Any, string:str) -> GrandPrix:
-        GPs = FormulaFeature.GetAllGPs(data)
-        for x in GPs:
+    def get_gp_by_name(data:Any, string:str) -> GrandPrix:
+        gp_list = FormulaFeature.get_all_gps(data)
+        for x in gp_list:
             if(x.Name == string):
                 return x
     @staticmethod   
-    def GetGPByRound(data:Any, round:int) -> GrandPrix:
-        GPs = FormulaFeature.GetAllGPs(data)
-        for x in GPs:
+    def get_gp_by_round(data:Any, round:int) -> GrandPrix:
+        gp_list = FormulaFeature.get_all_gps(data)
+        for x in gp_list:
             if(x.Round == round):
                 return x
             
     @staticmethod   
-    def GetFormattedSessionTime(session:Session, tzone) -> str:
+    def get_formatted_session_time(session:Session, tzone) -> str:
         if tzone == None or "":
             tzone = DEFAULT_TZONE
 
@@ -57,13 +57,13 @@ class FormulaFeature():
         except pytz.UnknownTimeZoneError:
             return None
     @staticmethod
-    def GetDriverStandings() -> List[DriverStandings.DriverStanding]:
+    def get_driver_standings() -> List[DriverStandings.DriverStanding]:
         response = requests.get(DRIVER_STANDINGS_URL)
         stand = DriverStandings.Root.from_dict(json.loads(response.content))
         return stand.MRData.StandingsTable
     
     @staticmethod
-    def GetRaceResultsByRound(round:int) -> Results.Race:
+    def get_race_results_by_round(round:int) -> Results.Race:
         response = requests.get(RACE_RESULTS_URL.format(round=str(round)))
         try:
             results = Results.Root.from_dict(json.loads(response.content))
@@ -75,13 +75,13 @@ class FormulaFeature():
         except:
             return None
     @staticmethod
-    def GetLatestResults(data):
-        race = FormulaFeature.FindClosestPastRace(data)
-        standings = FormulaFeature.GetRaceResultsByRound(race.Round)
+    def get_latest_results(data):
+        race = FormulaFeature.find_closest_past_race(data)
+        standings = FormulaFeature.get_race_results_by_round(race.Round)
         return standings.Results
     
     @staticmethod
-    def FormatResults(results:List[Results.Result]) -> str:
+    def format_results(results:List[Results.Result]) -> str:
         response:str = ""
         for x in results:
             if x.position == "1":
@@ -127,13 +127,13 @@ class FormulaFeature():
         return response
     
     @staticmethod #untested
-    def IsOngoing(session:Session) -> bool:
+    def is_ongoing(session:Session) -> bool:
         if session.Name == "Race":
             return session.StartTime + timedelta(minutes=160) < datetime.now(timezone.utc)
         return (session.StartTime + timedelta(minutes=60)) < datetime.now(timezone.utc)
     
     @staticmethod
-    def GetConstructorStandings() -> List[ConstructorStandings.ConstructorStanding]:
+    def get_constructor_standings() -> List[ConstructorStandings.ConstructorStanding]:
         response = requests.get(CONSTRUCTOR_STANDINGS_URL)
         stand = ConstructorStandings.Root.from_dict(json.loads(response.content))
         return stand.MRData.StandingsTable
