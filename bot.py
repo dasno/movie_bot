@@ -52,10 +52,13 @@ try:
     STREAM_URL = settings['BOT']['Stream_IP']
     CALENDAR_JSON = settings['BOT']['F1_Calendar_Json']
     DOCUMENTS_CHANNEL = settings['BOT']['Documents_Channel']
-    DOCS_CHECK_FREQ = settings['BOT']['Docs_Check_Frquency']
+    DOCS_CHECK_FREQ = float(settings['BOT']['Docs_Check_Frquency'])
 except KeyError as e:
     print("Missing config line")
     exit(4)
+except:
+    print("Error parsing settings")
+    exit(5)
 
 surveilance_target = settings['BOT']['Under_Surveilance'].split(',')
 
