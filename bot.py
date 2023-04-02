@@ -51,7 +51,7 @@ try:
     SERVER_ID = settings['BOT']['Discord_ServerID']
     STREAM_URL = settings['BOT']['Stream_IP']
     CALENDAR_JSON = settings['BOT']['F1_Calendar_Json']
-    DOCUMENTS_CHANNEL = settings['BOT']['Documents_Channel']
+    DOCUMENTS_CHANNEL = int(settings['BOT']['Documents_Channel'])
     DOCS_CHECK_FREQ = float(settings['BOT']['Docs_Check_Frquency'])
 except KeyError as e:
     print("Missing config line")
