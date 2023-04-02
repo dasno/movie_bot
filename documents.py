@@ -1,8 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
 
+BASE_URL = 'https://www.fia.com'
+DOC_LOCATION = '/documents/list/season/season-2023-2042/championships/fia-formula-one-world-championship-14'
+
 def check_for_last_document():
-    page = requests.get('https://www.fia.com/documents/list/season/season-2023-2042/championships/fia-formula-one-world-championship-14')
+    page = requests.get(BASE_URL+DOC_LOCATION)
     soup = BeautifulSoup(page.content, "html.parser")
     li = soup.find_all("li", {'class': 'document-row'})
     final_set = []
@@ -14,4 +17,4 @@ def check_for_last_document():
         return None
 
 def construct_full_link(doc_link):
-    return "https://www.fia.com" + doc_link.replace(' ', '%20')
+    return BASE_URL + doc_link.replace(' ', '%20')
