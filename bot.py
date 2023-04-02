@@ -198,7 +198,7 @@ async def f1_command(interaction, option:str, option2:str=None):
     
     if option == "standings":
         
-        if option2 == None or option2 == "drivers":
+        if option2 == None or option2 == "driver":
             standings = FormulaFeature.get_driver_standings()
             result = "**{seasonYear} Driver Standings**:\n".format(seasonYear = standings.season)
             for x in standings.StandingsLists[0].DriverStandings:
