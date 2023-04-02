@@ -8,6 +8,7 @@ from typing import List
 from discord.ext import tasks
 import configparser
 import requests
+import documents
 
 
 
@@ -37,6 +38,7 @@ def load_settings():
     return config
 
 settings = load_settings()
+last_doc = documents.check_for_last_document()
 
 
 try:
@@ -128,8 +130,18 @@ async def jelly_libs(interaction, library:lib_enum):
 
     await interaction.response.send_message(str(itemList))
 
+
+
 @tree.command(name = "f1", description= "Commands to show race results, standings and upcoming F1 races", guild=discord.Object(id=SERVER_ID))
 async def f1_command(interaction, option:str, option2:str=None):
+
+    if option == "last doc":
+        doc = documents.check_for_last_document()
+        embed = discord.Embed(title="Last posted FIA document")
+        name = doc['name'].strip()
+        embed.add_field(name=f":page_facing_up: {name}", value=documents.construct_full_link(doc['link']))
+        await interaction.response.send_message(embed=embed)
+        return
 
     if option == "when":
          gp,session = FormulaFeature.find_closest_session(json_dict)
@@ -199,7 +211,7 @@ async def f1_command(interaction, option:str, option2:str=None):
 @f1_command.autocomplete('option')
 async def f1_when_autocomplete(
     interaction: discord.Interaction,current: str) -> List[app_commands.Choice[str]]:
-    options = ['when', 'standings', 'gp']
+    options = ['when', 'standings', 'gp', 'last doc']
     return [
         app_commands.Choice(name=option, value=option)
         for option in options if current.lower() in option.lower()
@@ -209,7 +221,7 @@ async def f1_when_autocomplete(
     interaction: discord.Interaction,current: str) -> List[app_commands.Choice[str]]:
     options = gp_list
     print(current, interaction.namespace['option'])
-    if interaction.namespace['option'] == 'when':
+    if interaction.namespace['option'] == 'when' or interaction.namespace['option'] == 'last_doc':
         return []
     if interaction.namespace['option'] == 'gp':
         return [
@@ -221,14 +233,24 @@ async def f1_when_autocomplete(
         return [app_commands.Choice(name=option, value = option) for option in options]
 
 
-
+@tasks.loop(seconds=5)
+async def check_fia_doc():
+    global last_doc
+    doc = documents.check_for_last_document()
+    if doc == last_doc:
+        return
+    channel = client.get_channel(970994367441534996)
+    embed = discord.Embed(title=":rotating_light: FIA posted new document! :rotating:light:")
+    embed.add_field(name=f":page_facing_up: {doc['name'].strip()}", value=documents.construct_full_link(doc['link']))
+    await channel.send(embed=embed)
+    last_doc = doc
 
 @client.event
 async def on_ready():
     await tree.sync(guild=discord.Object(id=SERVER_ID))
     print(f'We have logged in as {client.user}')
     print("Ready!")
-    #RunStreamCheck.start()
+    check_fia_doc.start()
    
 #reactions to messages without slash    
 @client.event
