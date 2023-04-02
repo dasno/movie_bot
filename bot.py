@@ -247,7 +247,7 @@ async def check_fia_doc():
     if doc == last_doc:
         return
     channel = client.get_channel(DOCUMENTS_CHANNEL)
-    embed = discord.Embed(title=":rotating_light: FIA posted new document! :rotating:light:")
+    embed = discord.Embed(title=":rotating_light: FIA posted new document! :rotating_light:")
     embed.add_field(name=f":page_facing_up: {doc['name'].strip()}", value=documents.construct_full_link(doc['link']))
     await channel.send(embed=embed)
     last_doc = doc
