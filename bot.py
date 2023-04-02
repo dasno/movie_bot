@@ -25,7 +25,9 @@ def load_settings():
                          'Discord_ServerID': '',
                          'Stream_IP' : '',
                          'F1_Calendar_Json': '',
-                         'Under_Surveilance': ''}
+                         'Under_Surveilance': '',
+                         'Documents_Channel': '',
+                         'Docs_Check_Frquency': ''}
         with open('settings.conf', 'w') as config_file:
             config.write(config_file)
         print("Settings file not found. Template settings file was created.")
@@ -49,13 +51,15 @@ try:
     SERVER_ID = settings['BOT']['Discord_ServerID']
     STREAM_URL = settings['BOT']['Stream_IP']
     CALENDAR_JSON = settings['BOT']['F1_Calendar_Json']
+    DOCUMENTS_CHANNEL = settings['BOT']['Documents_Channel']
+    DOCS_CHECK_FREQ = settings['BOT']['Docs_Check_Frquency']
 except KeyError as e:
     print("Missing config line")
     exit(4)
 
 surveilance_target = settings['BOT']['Under_Surveilance'].split(',')
 
-if not API_KEY or not ADDRESS or not JELLY_UID or not TOKEN or not SERVER_ID or not STREAM_URL:
+if not API_KEY or not ADDRESS or not JELLY_UID or not TOKEN or not SERVER_ID or not STREAM_URL or not DOCUMENTS_CHANNEL:
     print("Missing settings values")
     exit(3)
 
@@ -233,13 +237,13 @@ async def f1_when_autocomplete(
         return [app_commands.Choice(name=option, value = option) for option in options]
 
 
-@tasks.loop(seconds=5)
+@tasks.loop(seconds=DOCS_CHECK_FREQ)
 async def check_fia_doc():
     global last_doc
     doc = documents.check_for_last_document()
     if doc == last_doc:
         return
-    channel = client.get_channel(970994367441534996)
+    channel = client.get_channel(DOCUMENTS_CHANNEL)
     embed = discord.Embed(title=":rotating_light: FIA posted new document! :rotating:light:")
     embed.add_field(name=f":page_facing_up: {doc['name'].strip()}", value=documents.construct_full_link(doc['link']))
     await channel.send(embed=embed)
