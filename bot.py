@@ -27,7 +27,7 @@ def load_settings():
                          'F1_Calendar_Json': '',
                          'Under_Surveilance': '',
                          'Documents_Channel': '',
-                         'Docs_Check_Frquency': ''}
+                         'Docs_Check_Frequency': ''}
         with open('settings.conf', 'w') as config_file:
             config.write(config_file)
         print("Settings file not found. Template settings file was created.")
@@ -52,7 +52,7 @@ try:
     STREAM_URL = settings['BOT']['Stream_IP']
     CALENDAR_JSON = settings['BOT']['F1_Calendar_Json']
     DOCUMENTS_CHANNEL = int(settings['BOT']['Documents_Channel'])
-    DOCS_CHECK_FREQ = float(settings['BOT']['Docs_Check_Frquency'])
+    DOCS_CHECK_FREQ = float(settings['BOT']['Docs_Check_Frequency'])
 except KeyError as e:
     print("Missing config line")
     exit(4)
