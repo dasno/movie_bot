@@ -1,0 +1,6 @@
+requests
+configparser
+bs4
+discord
+pytz
+dateutils
