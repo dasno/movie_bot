@@ -4,3 +4,7 @@ env
 *.out
 *.json
 settings.conf
+lib
+pyvenv.cfg
+include
+scripts
